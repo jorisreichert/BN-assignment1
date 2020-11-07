@@ -19,7 +19,7 @@ head(d.filtered)
 # Merge Medu/Fedu into Pedu and Walc/Dalc into alc
 d.filtered$alc <- rowMeans(cbind(d.filtered$Walc, d.filtered$Dalc), na.rm=TRUE)
 d.filtered$Pedu <- rowMeans(cbind(d.filtered$Medu, d.filtered$Fedu), na.rm=TRUE)
-d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu"))]
+d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu", "reason"))]
 
 ##We can use unique(d.ordering$varname) to discover the used values
 d.ordering <- d.merged
@@ -41,13 +41,7 @@ d.ordering$Pstatus <- as.numeric( ordered( d.ordering$Pstatus, c("A", "T")))
 d.ordering$paid <- as.numeric( ordered( d.ordering$paid, c("no", "yes")))
 d.ordering$higher <- as.numeric( ordered( d.ordering$higher, c("no", "yes")))
 d.ordering$internet <- as.numeric( ordered( d.ordering$internet, c("no", "yes")))
-
-
-##Specify solutions for non-binary unorderable variables
-##TODO find solution for d.ordering$reason, perhaps leave it out.
-unique(d.ordering$reason)
-
-
+d.ordering$sex <- as.numeric( ordered ( d.ordering$internet, c("F", "M")))
 
 ##That was all the pre-processing that had to happen.
 d<- d.ordering
