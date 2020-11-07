@@ -21,20 +21,18 @@ d.filtered$alc <- rowMeans(cbind(d.filtered$Walc, d.filtered$Dalc), na.rm=TRUE)
 d.filtered$Pedu <- rowMeans(cbind(d.filtered$Medu, d.filtered$Fedu), na.rm=TRUE)
 d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu"))]
 
-##TODO finish the polychoric correlation for the to-be-merged-variables
 ##We can use unique(d.ordering$varname) to discover the used values
 d.ordering <- d.merged
 
 ##Specify ordering for categorical variables that represent continues variables
-##TODO check if age needs adapting. I think it should go here as it's binned in years
 d.ordering$famsize <- ordered( d.ordering$famsize, levels=c("LE3", "GT3") )
-##TODO check merge of Medu/Fedu, it will go in this category.
 d.ordering$studytime <- ordered( d.ordering$studytime, levels=c("1", "2", "3", "4") )
 d.ordering$famrel <- ordered( d.ordering$famrel, levels=c("1", "2", "3", "4", "5") )
 d.ordering$freetime <- ordered( d.ordering$freetime, levels=c("1", "2", "3", "4", "5") )
 d.ordering$goout <- ordered( d.ordering$goout, levels=c("1", "2", "3", "4", "5") )
-##TODO alcohol when merged, it will go in this category.
 d.ordering$health <- ordered( d.ordering$health, levels=c("1", "2", "3", "4", "5") )
+d.ordering$alc <- ordered( d.ordering$alc, levels=c(1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0))
+d.ordering$Pedu <- ordered( d.ordering$Pedu, levels=c(0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0))
 
 
 ##Specify (trivial) ordering for binary variables
