@@ -13,7 +13,7 @@ d.original=read.table("data/student-por.csv",sep=";",header=TRUE)
 
 ##We want to use only columns:
 ##2, 3, 4, 5, 6, 7, 8, 11, 14, 18, 21, 22, 24, 25, 26, 27, 28, 29, 30
-d.filtered <- d.original[c(2:8, 11, 14, 18, 21, 22, 24:30)]
+d.filtered <- d.original[c(2:8, 11, 14, 18, 19, 21, 22, 24:30)]
 head(d.filtered)
 
 # Merge Medu/Fedu into Pedu and Walc/Dalc into alc
@@ -42,6 +42,7 @@ d.ordering$paid <- as.numeric( ordered( d.ordering$paid, c("no", "yes")))
 d.ordering$higher <- as.numeric( ordered( d.ordering$higher, c("no", "yes")))
 d.ordering$internet <- as.numeric( ordered( d.ordering$internet, c("no", "yes")))
 d.ordering$sex <- as.numeric( ordered ( d.ordering$sex, c("F", "M")))
+d.ordering$activities <- as.numeric( ordered ( d.ordering$activities, c("no", "yes")))
 
 ##That was all the pre-processing that had to happen.
 d<- d.ordering
@@ -92,6 +93,8 @@ g <- dagitty('
              ')
 
 plot(g)
+
+head(d)
 
 # Test model using polychoric correlation matrix
 localTests( g, sample.cov=M, sample.nobs=nrow(d) )
