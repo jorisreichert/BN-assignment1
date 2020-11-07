@@ -16,10 +16,10 @@ d.original=read.table("data/student-por.csv",sep=";",header=TRUE)
 d.filtered <- d.original[c(2:8, 11, 14, 18, 21, 22, 24:30)]
 head(d.filtered)
 
-
-##TODO merge Medu&Fedu, merge Dalc&Walc
-d.merged <- d.filtered
-
+# Merge Medu/Fedu into Pedu and Walc/Dalc into alc
+d.filtered$alc <- rowMeans(cbind(d.filtered$Walc, d.filtered$Dalc), na.rm=TRUE)
+d.filtered$Pedu <- rowMeans(cbind(d.filtered$Medu, d.filtered$Fedu), na.rm=TRUE)
+d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu"))]
 
 ##TODO finish the polychoric correlation for the to-be-merged-variables
 ##We can use unique(d.ordering$varname) to discover the used values
