@@ -41,7 +41,7 @@ d.ordering$Pstatus <- as.numeric( ordered( d.ordering$Pstatus, c("A", "T")))
 d.ordering$paid <- as.numeric( ordered( d.ordering$paid, c("no", "yes")))
 d.ordering$higher <- as.numeric( ordered( d.ordering$higher, c("no", "yes")))
 d.ordering$internet <- as.numeric( ordered( d.ordering$internet, c("no", "yes")))
-d.ordering$sex <- as.numeric( ordered ( d.ordering$internet, c("F", "M")))
+d.ordering$sex <- as.numeric( ordered ( d.ordering$sex, c("F", "M")))
 
 ##That was all the pre-processing that had to happen.
 d<- d.ordering
