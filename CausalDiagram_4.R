@@ -1,7 +1,7 @@
 library(naivebayes)
 library(dagitty)
-library(lavaan)
 library(bnlearn)
+library(lavaan)
 
 d.original=read.table("data/student-por.csv",sep=";",header=TRUE)
 
@@ -28,6 +28,8 @@ d.ordering$health <- ordered( d.ordering$health, levels=c("1", "2", "3", "4", "5
 d.ordering$alc <- ordered( d.ordering$alc, levels=c(1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0))
 d.ordering$Pedu <- ordered( d.ordering$Pedu, levels=c(0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0))
 
+##What to do with age?
+d.ordering$age <- as.numeric((d.ordering$age))
 
 ##Specify (trivial) ordering for binary variables
 d.ordering$address <- as.numeric( ordered( d.ordering$address, c("U", "R")))
@@ -131,10 +133,20 @@ localTests( g, sample.cov=M, sample.nobs=nrow(train) )
 plot(g)
 
 net1 <- model2network(toString(g, "bnlearn"))
+# fit1 <- bn.fit( net1, train)
 
+ fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(train))
+ summary(fit)
+ 
+ predicted.higher <- predict(fit,node="higher",data=test[,"health",drop=F],method="bayes-lw")
 
-# fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
-# summary(fit)
+ plot(test[,"higher"],predicted.higher)
+ 
+ 
+#lvsem <- toString(g, "lavaan")
+#lvsem.fit <- sem(lvsem, train)
+#summary(lvsem.fit)
+
 
 fg <- lavaanToGraph(fit, digits=2)
 coordinates(fg) <- coordinates(g)
