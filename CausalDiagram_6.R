@@ -3,6 +3,7 @@ library(dagitty)
 library(bnlearn)
 #library(lavaan)
 
+set.seed(5)
 d.original=read.table("data/student-por.csv",sep=";",header=TRUE)
 
 ##We want to use only columns:
