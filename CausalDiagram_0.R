@@ -14,6 +14,9 @@ d.filtered$alc <- rowMeans(cbind(d.filtered$Walc, d.filtered$Dalc), na.rm=TRUE)
 d.filtered$Pedu <- rowMeans(cbind(d.filtered$Medu, d.filtered$Fedu), na.rm=TRUE)
 d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu", "reason"))]
 
+# drop rows were Pedu = 0
+d<-d[!(d$Pedu==0.0),]
+
 ##We can use unique(d.ordering$varname) to discover the used values
 d.ordering <- d.merged
 
@@ -74,3 +77,6 @@ g <- dagitty("dag {
 localTests( g, sample.cov=M, sample.nobs=nrow(train) )
 
 plot(g)
+
+fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
+summary(fit)
