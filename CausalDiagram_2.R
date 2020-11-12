@@ -39,10 +39,17 @@ d.ordering$activities <- as.numeric( ordered (d.ordering$activities, c("yes", "n
 
 ##That was all the pre-processing that had to happen.
 d<- d.ordering
+
+##Train/test split currently 70:30
+dt = sort(sample(nrow(d), nrow(d)*.7))
+train <- d[dt,]
+test <- d[-dt,]
+
+
 ##Now we’re prepared to process the entire dataset into a correlation matrix
 ## as if it were fully continuous.
 # Extract polychoric correlation matrix
-M <- lavCor(d)
+M <- lavCor(train)
 
 g <- dagitty("dag {
     Pedu -> {famsize address internet paid activities higher}
@@ -62,6 +69,9 @@ g <- dagitty("dag {
     absences -> higher
 }")
 
-localTests( g, sample.cov=M, sample.nobs=nrow(d) )
+localTests( g, sample.cov=M, sample.nobs=nrow(train) )
 
 plot(g)
+
+fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
+summary(fit)

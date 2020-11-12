@@ -14,9 +14,6 @@ d.filtered$alc <- rowMeans(cbind(d.filtered$Walc, d.filtered$Dalc), na.rm=TRUE)
 d.filtered$Pedu <- rowMeans(cbind(d.filtered$Medu, d.filtered$Fedu), na.rm=TRUE)
 d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu", "Fedu", "reason"))]
 
-# drop rows were Pedu = 0
-d<-d[!(d$Pedu==0.0),]
-
 ##We can use unique(d.ordering$varname) to discover the used values
 d.ordering <- d.merged
 
@@ -44,8 +41,6 @@ d.ordering$activities <- as.numeric( ordered (d.ordering$activities, c("yes", "n
 d <- d.ordering
 
 ##Train/test split currently 70:30
-#TODO: the algorithm expects every category to be apparent in each set, which can 
-#be problematic for the 0 score in Pedu
 dt = sort(sample(nrow(d), nrow(d)*.7))
 train <- d[dt,]
 test <- d[-dt,]
