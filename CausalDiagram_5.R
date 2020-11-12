@@ -19,14 +19,14 @@ d.merged <- d.filtered[, -which(names(d.filtered) %in% c("Walc", "Dalc", "Medu",
 d.ordering <- d.merged
 
 ##Specify ordering for categorical variables that represent continues variables
-d.ordering$famsize <- ordered( d.ordering$famsize, levels=c("LE3", "GT3") )
-d.ordering$studytime <- ordered( d.ordering$studytime, levels=c("1", "2", "3", "4") )
-d.ordering$famrel <- ordered( d.ordering$famrel, levels=c("1", "2", "3", "4", "5") )
-d.ordering$freetime <- ordered( d.ordering$freetime, levels=c("1", "2", "3", "4", "5") )
-d.ordering$goout <- ordered( d.ordering$goout, levels=c("1", "2", "3", "4", "5") )
-d.ordering$health <- ordered( d.ordering$health, levels=c("1", "2", "3", "4", "5") )
-d.ordering$alc <- ordered( d.ordering$alc, levels=c(1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0))
-d.ordering$Pedu <- ordered( d.ordering$Pedu, levels=c(0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0))
+d.ordering$famsize <- as.numeric(ordered( d.ordering$famsize, levels=c("LE3", "GT3") ))
+d.ordering$studytime <- as.numeric(ordered( d.ordering$studytime, levels=c("1", "2", "3", "4") ))
+d.ordering$famrel <- as.numeric(ordered( d.ordering$famrel, levels=c("1", "2", "3", "4", "5") ))
+d.ordering$freetime <- as.numeric(ordered( d.ordering$freetime, levels=c("1", "2", "3", "4", "5") ))
+d.ordering$goout <- as.numeric(ordered( d.ordering$goout, levels=c("1", "2", "3", "4", "5") ))
+d.ordering$health <- as.numeric(ordered( d.ordering$health, levels=c("1", "2", "3", "4", "5") ))
+d.ordering$alc <- as.numeric(ordered( d.ordering$alc, levels=c(1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)))
+d.ordering$Pedu <- as.numeric(ordered( d.ordering$Pedu, levels=c(0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0)))
 
 ##What to do with age?
 d.ordering$age <- as.numeric((d.ordering$age))
@@ -122,7 +122,7 @@ localTests( g, sample.cov=M, sample.nobs=nrow(train) )
 plot(g)
 
 net1 <- model2network(toString(g, "bnlearn"))
-# fit1 <- bn.fit( net1, train)
+fit1 <- bn.fit( net1, train)
 
 #fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(train))
 
@@ -144,9 +144,10 @@ plot(test[,"higher"],predicted.higher)
 #summary(lvsem.fit)
 
 
-fg <- lavaanToGraph(fit, digits=2)
-coordinates(fg) <- coordinates(g)
+
+#fg <- lavaanToGraph(fit, digits=2)
+#coordinates(fg) <- coordinates(g)
   
-plot(fg, show.coefficients=TRUE)
-class(fit)
+#plot(fg, show.coefficients=TRUE)
+#class(fit)
 
