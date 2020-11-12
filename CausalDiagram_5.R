@@ -134,9 +134,15 @@ fit
 
 predict(fit,node="higher", data=test,  method="bayes-lw")
 
-predicted.higher <- predict(fit,node="higher",data=test[,"health",drop=F],method="bayes-lw")
+predicted.higher <- predict(fit,node="higher",data=test,method="bayes-lw")
 
 plot(test[,"higher"],predicted.higher)
+#prepare data for plotting
+prediction <- predicted.higher
+reality <- test[,"higher"]
+deviation = prediction-reality
+
+scatter.smooth(deviation)
 
 
 #lvsem <- toString(g, "lavaan")
