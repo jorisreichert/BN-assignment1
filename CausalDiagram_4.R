@@ -128,25 +128,12 @@ studytime -> higher
 ')
 ##removed studytime -> freetime
 
-localTests( g, sample.cov=M, sample.nobs=nrow(train) )
+localTests( g, sample.cov=M, sample.nobs=nrow(d) )
 
 plot(g)
 
-net1 <- model2network(toString(g, "bnlearn"))
-# fit1 <- bn.fit( net1, train)
-
- fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(train))
- summary(fit)
- 
- predicted.higher <- predict(fit,node="higher",data=test[,"health",drop=F],method="bayes-lw")
-
- plot(test[,"higher"],predicted.higher)
- 
- 
-#lvsem <- toString(g, "lavaan")
-#lvsem.fit <- sem(lvsem, train)
-#summary(lvsem.fit)
-
+fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
+summary(fit)
 
 fg <- lavaanToGraph(fit, digits=2)
 coordinates(fg) <- coordinates(g)
