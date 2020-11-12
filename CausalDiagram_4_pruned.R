@@ -94,7 +94,10 @@ plot(g)
 fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
 summary(fit)
 
-fg <- lavaanToGraph(fit, digits=2)
+x <- lavaan::parTable(fit)
+x <- x[x[,"exo"]==0,]
+
+fg <- lavaanToGraph(x, digits=2)
 coordinates(fg) <- coordinates(g)
 
 plot(fg, show.coefficients=TRUE)
