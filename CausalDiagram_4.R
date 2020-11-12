@@ -1,6 +1,7 @@
 library(naivebayes)
 library(dagitty)
 library(lavaan)
+library(bnlearn)
 
 d.original=read.table("data/student-por.csv",sep=";",header=TRUE)
 
@@ -103,7 +104,6 @@ famsize -> freetime
 famsize -> studytime
 freetime -> goout
 freetime -> health
-freetime -> studytime
 goout -> absences
 goout -> alc
 goout -> higher
@@ -119,18 +119,22 @@ sex -> health
 sex -> higher
 sex -> studytime
 studytime -> absences
-studytime -> freetime
+freetime -> studytime
 studytime -> health
 studytime -> higher
 }
 ')
+##removed studytime -> freetime
 
 localTests( g, sample.cov=M, sample.nobs=nrow(train) )
 
 plot(g)
 
-fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
-summary(fit)
+net1 <- model2network(toString(g, "bnlearn"))
+
+
+# fit <- sem(toString(g,"lavaan"), sample.cov=M, sample.nobs=nrow(d))
+# summary(fit)
 
 fg <- lavaanToGraph(fit, digits=2)
 coordinates(fg) <- coordinates(g)
