@@ -163,3 +163,39 @@ plot(test[,"higher"],predicted.higher)
 
 #plot(fg, show.coefficients=TRUE)
 #class(fit)
+
+class_1 <- predicted.higher[test[,"higher"]==1]
+class_2 <- predicted.higher[test[,"higher"]==2]
+
+shapiro.test(class_1) ## p-value large enough to assume normal distr
+shapiro.test(class_2) ## p-value large enough to assume normal distr
+
+# Create a sequence of numbers between -10 and 10 incrementing by 0.1.
+x <- seq(0, 3, by = .01)
+
+# Choose the mean as 2.5 and standard deviation as 0.5.
+y1 <- dnorm(x, mean = mean(class_1), sd = sd(class_1))
+y2 <- dnorm(x, mean = mean(class_2), sd = sd(class_2))
+
+plot(x,y2,type='l',col="red")
+lines(x,y1,col="green")
+points(1.7649, 2.1385, pch=16, cex=2, col="blue") ## used wolfram-alpha to find the intersection
+
+predicted.higher[predicted.higher < 1.7649] <- 1
+predicted.higher[predicted.higher > 1.7649] <- 2
+
+print(predicted.higher)
+print(test[, "higher"])
+
+predicted.TP = length(predicted.higher[test[,"higher"]==2 & predicted.higher==2])
+predicted.TN = length(predicted.higher[test[,"higher"]==1 & predicted.higher==1])
+predicted.FP = length(predicted.higher[test[,"higher"]==1 & predicted.higher==2])                      
+predicted.FN = length(predicted.higher[test[,"higher"]==2 & predicted.higher==1])
+
+print(predicted.TP)
+print(predicted.TN)
+print(predicted.FP)
+print(predicted.FN)
+
+mcc <- (predicted.TP*predicted.TN - predicted.FP*predicted.FN) / sqrt( (predicted.TP + predicted.FP)*(predicted.TP + predicted.FN)*(predicted.TN + predicted.FP)*(predicted.TN + predicted.FN) )
+print(mcc)
